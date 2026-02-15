@@ -2,8 +2,8 @@ name: Generate and Deploy Report
 
 on:
   schedule:
-    # Runs at 13:00 UTC (8 AM ET) Monday to Friday
-    - cron: '0 13 * * 1-5'
+    # Runs at 11:00 UTC (6 AM EST) and 18:00 UTC (1 PM EST) Monday to Friday
+    - cron: '0 11,18 * * 1-5'
   workflow_dispatch: # Allows manual trigger from the GitHub Actions tab
 
 jobs:
