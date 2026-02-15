@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Markets Dashboard | Institutional Intelligence{% endblock %}
+
+{% block content %}
+<div class="report-header">
+    <h1 style="color: var(--primary); font-weight: 800;">MARKETS DASHBOARD</h1>
+    <p
+        style="font-family: var(--font-sans); font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+        Cross-Asset Performance & Equity Market Fundamentals</p>
+</div>
+
+<section style="margin-bottom: 3rem;">
+    <h2
+        style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+        PERFORMANCE OVERVIEW</h2>
+    <div class="stat-grid">
+        {% for widget in performance_widgets %}
+        <div class="stat-card">
+            <div class="stat-label">{{ widget.label }}</div>
+            <div class="stat-value">{{ widget.value }}</div>
+            <div
+                style="font-size: 0.75rem; font-weight: 700; margin-top: 0.25rem; color: {{ '#006400' if widget.change > 0 else '#8B0000' if widget.change < 0 else 'var(--text-muted)' }};">
+                {{ widget.change_str }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+    <section>
+        <h2
+            style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+            RATES CONTEXT</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tenor</th>
+                        <th>Yield</th>
+                        <th>Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in rates_data %}
+                    <tr>
+                        <td><strong style="color: var(--secondary);">{{ r.label }}</strong></td>
+                        <td>{{ r.value }}</td>
+                        <td class="{{ 'val-pos' if r.change > 0 else 'val-neg' if r.change < 0 else '' }}">
+                            {{ r.change_str }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section>
+        <h2
+            style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+            EDITORIAL SNIPPETS</h2>
+        <div class="editorial-note" style="margin: 0; padding-top: 0; padding-bottom: 0; border-left-width: 3px;">
+            <p style="font-size: 0.95rem; line-height: 1.5;">{{ ed.macro_view or "Macro liquidity rotation remains the
+                primary driver of equity-beta. Institutional positioning shows a tactical shift toward quality-income
+                assets as terminal rate expectations stabilize." }}</p>
+        </div>
+    </section>
+</div>
+
+<section>
+    <h2
+        style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+        EQUITY INDEX PERFORMANCE</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Open</th>
+                    <th>High</th>
+                    <th>Low</th>
+                    <th>Last</th>
+                    <th>% Chg</th>
+                    <th>Range</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in performance_rows %}
+                <tr>
+                    <td><strong style="color: var(--secondary);">{{ row.code }}</strong></td>
+                    <td>{{ row.open }}</td>
+                    <td>{{ row.high }}</td>
+                    <td>{{ row.low }}</td>
+                    <td style="font-weight: 700;">{{ row.last }}</td>
+                    <td class="{{ 'val-pos' if row.pct_change > 0 else 'val-neg' if row.pct_change < 0 else '' }}">
+                        {{ row.pct_change_str }}
+                    </td>
+                    <td>{{ row.range }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

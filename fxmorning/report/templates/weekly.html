@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Weekly FX Outlook | Institutional Intelligence{% endblock %}
+
+{% block content %}
+<div class="report-header">
+  <h1 style="color: var(--primary); font-weight: 800;">WEEKLY FX OUTLOOK</h1>
+  <p
+    style="font-family: var(--font-sans); font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+    Macro Themes & Strategic Trade Frameworks</p>
+</div>
+
+{% if ed.macro_view %}
+<div class="editorial-note">
+  {{ ed.macro_view }}
+</div>
+{% endif %}
+
+<section style="margin-bottom: 3rem;">
+  <h2
+    style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+    RELATIVE ROTATION (RRG)</h2>
+  <div class="chart-box">
+    {{ rrg_chart | safe }}
+    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; font-style: italic;">
+      *Note: RRG categorizes pairs into four quadrants based on Relative Strength (X-axis) and Momentum (Y-axis) vs the
+      USD anchor (100,100).
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2
+    style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+    CENTRAL BANK POLICY BACKDROP</h2>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>CCY</th>
+          <th>Policy Rate</th>
+          <th>2Y Yield</th>
+          <th>2Y Spread (BP)</th>
+          <th>Next Meeting</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rates_rows %}
+        <tr>
+          <td><strong style="color: var(--secondary);">{{ row.code }}</strong></td>
+          <td>{{ row.policy_rate }}</td>
+          <td>{{ row.yield_2y }}</td>
+          <td class="{{ 'val-neg' if row.spread_2y and row.spread_2y < 0 else '' }}">
+            {{ row.spread_2y_str }}
+          </td>
+          <td style="font-family: var(--font-sans); font-size: 0.75rem;">{{ row.next_meeting }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section style="margin-top: 3rem;">
+  <h2
+    style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+    IMM COMMITMENT OF TRADERS (NET POS)</h2>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Currency</th>
+          <th>Net Position</th>
+          <th>W/W Chg</th>
+          <th>Sentiment</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in cot_rows %}
+        <tr>
+          <td><strong style="color: var(--secondary);">{{ row.code }}</strong></td>
+          <td class="{{ 'val-pos' if row.net > 0 else 'val-neg' }}">{{ row.net }}</td>
+          <td class="{{ 'val-pos' if row.change > 0 else 'val-neg' }}">{{ row.change }}</td>
+          <td>
+            <span
+              style="font-size: 0.7rem; padding: 0.2rem 0.5rem; background: {{ '#e6f4ea' if row.net > 0 else '#fce8e6' }}; border-radius: 4px; font-weight: 700;">
+              {{ 'BULLISH' if row.net > 0 else 'BEARISH' }}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block sidebar %}
+{% if ed.weekly_prediction %}
+<div class="sidebar-widget" style="background: var(--bg); border-left: 4px solid var(--primary);">
+  <h3>Strategic Outlook</h3>
+  <p style="font-family: var(--font-serif); font-size: 1rem; font-weight: 700; color: var(--secondary);">
+    {{ ed.weekly_prediction }}
+  </p>
+</div>
+{% endif %}
+{% endblock %}

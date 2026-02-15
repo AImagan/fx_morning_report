@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Daily FX Update | Institutional Intelligence{% endblock %}
+
+{% block content %}
+<div class="report-header">
+  <h1 style="color: var(--primary); font-weight: 800;">DAILY FX UPDATE</h1>
+  <p
+    style="font-family: var(--font-sans); font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+    Tactical Macro Highlights & Technical Execution Levels</p>
+</div>
+
+{% if ed.daily_analyst_note %}
+<div class="editorial-note">
+  {{ ed.daily_analyst_note }}
+</div>
+{% endif %}
+
+<section style="margin-bottom: 3rem;">
+  <h2
+    style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+    THE BLITZ</h2>
+  <ul style="font-family: var(--font-serif); font-size: 1rem; line-height: 1.6; color: var(--secondary);">
+    <li style="margin-bottom: 0.75rem;"><strong>USD Orientation:</strong> Rangebound: no clear directional impulse; UST
+      2Y -7.0bp, 10Y -5.0bp d/d</li>
+    <li style="margin-bottom: 0.75rem;"><strong>Top Mover:</strong> USDJPY (-0.29%) on continued carry unwinds and JGB
+      yield pressure.</li>
+    <li style="margin-bottom: 0.75rem;"><strong>Execution Watch:</strong> Monitoring top-tier data prints and central
+      bank speaker commentary for breakout cues.</li>
+  </ul>
+</section>
+
+<section>
+  <h2
+    style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+    FX DASHBOARD (G10 CROSSES)</h2>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Pair</th>
+          <th>Open</th>
+          <th>High</th>
+          <th>Low</th>
+          <th>Last</th>
+          <th>% Chg</th>
+          <th>Range</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in fx_rows %}
+        <tr>
+          <td><strong style="color: var(--secondary);">{{ row.code }}</strong></td>
+          <td>{{ row.open }}</td>
+          <td>{{ row.high }}</td>
+          <td>{{ row.low }}</td>
+          <td style="font-weight: 700;">{{ row.last }}</td>
+          <td class="{{ 'val-pos' if row.pct_change > 0 else 'val-neg' if row.pct_change < 0 else '' }}">
+            {{ row.pct_change_str }}
+          </td>
+          <td>{{ row.range }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% if main_chart %}
+<section style="margin-top: 3rem;">
+  <h2
+    style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+    TECHNICAL VISUALIZATION: USD TREND</h2>
+  <div class="chart-box">
+    {{ main_chart | safe }}
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

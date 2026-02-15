@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}FX Morning Report | Institutional Intelligence{% endblock %}</title>
+  <link rel="stylesheet" href="static/css/style.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <h1 class="brand-title">FX MORNING REPORT</h1>
+        <span class="brand-sub">Analytical Intelligence &bull; {{ generated_at }}</span>
+      </div>
+      <nav class="nav">
+        <a href="index.html" class="{{ 'active' if active_page == 'home' else '' }}">Markets</a>
+        <a href="daily.html" class="{{ 'active' if active_page == 'daily' else '' }}">Daily Update</a>
+        <a href="weekly.html" class="{{ 'active' if active_page == 'weekly' else '' }}">Weekly Outlook</a>
+        <a href="crypto.html" class="{{ 'active' if active_page == 'crypto' else '' }}">Crypto</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <main class="main-content">
+      {% block content %}{% endblock %}
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-widget">
+        <h3>Market Pulse</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.8rem; color: var(--text-muted);">
+          <li style="margin-bottom: 0.75rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">
+            <strong style="color: var(--secondary);">Macro Pivot:</strong> Focus on terminal rates and growth
+            divergence.
+          </li>
+          <li style="margin-bottom: 0.75rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">
+            <strong style="color: var(--secondary);">Liquidity:</strong> Monitoring month-end rebalancing flows.
+          </li>
+          <li style="margin-bottom: 0.75rem;">
+            <strong style="color: var(--secondary);">Volatility:</strong> G10 FX vol remains contained despite yield
+            curve volatility.
+          </li>
+        </ul>
+      </div>
+
+      {% if ed.expert_references %}
+      <div class="sidebar-widget">
+        <h3>Institutional Views</h3>
+        {% for expert in ed.expert_references %}
+        <div style="margin-bottom: 1.25rem;">
+          <p style="font-family: var(--font-serif); font-size: 0.85rem; font-style: italic; margin-bottom: 0.25rem;">"{{
+            expert.quote }}"</p>
+          <cite
+            style="font-family: var(--font-sans); font-size: 0.7rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">&mdash;
+            {{ expert.name }}</cite>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% block sidebar %}{% endblock %}
+
+      {% if headlines %}
+      <div class="sidebar-widget">
+        <h3>Global Headlines</h3>
+        {% for info in headlines[:6] %}
+        <div style="margin-bottom: 0.75rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">
+          <a href="{{ info.url }}" target="_blank"
+            style="text-decoration: none; font-size: 0.85rem; font-weight: 600; color: var(--text); display: block; line-height: 1.3;">{{
+            info.title }}</a>
+          <span style="font-size: 0.65rem; color: var(--text-muted);">{{ info.source }} &bull; {{ info.published
+            }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </aside>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-sans); font-size: 0.9rem; color: var(--primary); margin-bottom: 0.5rem;">FX
+          MORNING REPORT</h2>
+        <p style="font-size: 0.7rem; color: var(--text-muted);">Institutional Investment Grade Analysis</p>
+      </div>
+      <div class="disclaimer">
+        <strong>FOR PROFESSIONAL INVESTORS ONLY.</strong> The information contained herein is for informational purposes
+        only and does not constitute a recommendation, offer, or solicitation to buy or sell any financial instrument.
+        Past performance is not indicative of future results. Market conditions and projections are subject to change
+        without notice. Full risk disclosure is available upon request through primary institutional channels.
+        <br><br>
+        &copy; {{ generated_at[:4] if generated_at else '2026' }} FX Morning Report Analytics. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

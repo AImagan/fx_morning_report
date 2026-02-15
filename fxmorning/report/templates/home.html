@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-left">
+    <h1>Markets</h1>
+    <p class="muted">Cross-asset snapshot with FX focus (CAD + USD lens, global majors in the grid).</p>
+  </div>
+  <div class="hero-right">
+    <div class="pill">Generated: {{ generated_at }}</div>
+  </div>
+</section>
+
+<section class="grid">
+  {% for card in cross_cards %}
+  <div class="card">
+    <div class="card-title">{{ card.label }}</div>
+    <div class="card-value">{{ card.last }}</div>
+    <div class="card-sub {{ 'pos' if card.pct_change is not none and card.pct_change>0 else 'neg' if card.pct_change is not none and card.pct_change<0 else '' }}">
+      {{ card.pct_change_str }}
+    </div>
+  </div>
+  {% endfor %}
+</section>
+
+<section class="section">
+  <h2>FX Dashboard</h2>
+  <div class="muted">Open • High • Low • Last • % Chg • Daily Range</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Pair</th>
+          <th>Open</th>
+          <th>High</th>
+          <th>Low</th>
+          <th>Last</th>
+          <th>% Chg</th>
+          <th>Range</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in fx_rows %}
+        <tr>
+          <td><strong>{{ row.label }}</strong></td>
+          <td>{{ row.open }}</td>
+          <td>{{ row.high }}</td>
+          <td>{{ row.low }}</td>
+          <td>{{ row.last }}</td>
+          <td class="{{ 'pos' if row.pct_change is not none and row.pct_change>0 else 'neg' if row.pct_change is not none and row.pct_change<0 else '' }}">{{ row.pct_change_str }}</td>
+          <td>{{ row.range }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callouts">
+    <div class="callout">
+      <div class="callout-title">Rates context</div>
+      <div class="callout-body">
+        <div><strong>UST 2Y:</strong> {{ ust2y }} ({{ ust2y_chg }})</div>
+        <div><strong>UST 10Y:</strong> {{ ust10y }} ({{ ust10y_chg }})</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">Top mover</div>
+      <div class="callout-body">
+        {{ top_mover }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

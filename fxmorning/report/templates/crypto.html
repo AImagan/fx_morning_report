@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Cryptocurrency | Institutional Intelligence{% endblock %}
+
+{% block content %}
+<div class="report-header">
+    <h1 style="color: var(--primary); font-weight: 800;">CRYPTOCURRENCY DASHBOARD</h1>
+    <p
+        style="font-family: var(--font-sans); font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+        Digital Asset Liquidity & Stablecoin Solvency Metrics</p>
+</div>
+
+<div class="editorial-note">
+    Bitcoin dominance and stablecoin inflows remain the primary indicators for liquidity rotation. Current sentiment
+    suggests a consolidation phase in major L1s as markets digest macro volatility.
+</div>
+
+<section style="margin-bottom: 3rem;">
+    <h2
+        style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+        CRYPTO MARKET OVERVIEW</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Open</th>
+                    <th>High</th>
+                    <th>Low</th>
+                    <th>Last</th>
+                    <th>% Chg</th>
+                    <th>Range</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in crypto_rows %}
+                <tr>
+                    <td>
+                        <div style="display: flex; flex-direction: column;">
+                            <strong style="color: var(--secondary);">{{ row.code }}</strong>
+                            <span style="font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-sans);">{{
+                                row.label }}</span>
+                        </div>
+                    </td>
+                    <td>{{ row.open }}</td>
+                    <td>{{ row.high }}</td>
+                    <td>{{ row.low }}</td>
+                    <td style="font-weight: 700;">{{ row.last }}</td>
+                    <td
+                        class="{{ 'val-pos' if row.pct_change and row.pct_change > 0 else 'val-neg' if row.pct_change and row.pct_change < 0 else '' }}">
+                        {{ row.pct_change_str }}
+                    </td>
+                    <td>{{ row.range }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% if headlines %}
+<section>
+    <h2
+        style="font-size: 1rem; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+        CRYPTO INTELLIGENCE HEADLINES</h2>
+    <div class="headline-grid">
+        {% for h in headlines[:8] %}
+        <a href="{{ h.url }}" target="_blank" class="headline-item">
+            <div class="headline-title">{{ h.title }}</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-sans);">PRO SOURCE &bull;
+                {{ h.published or 'JUST IN' }}</div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}
