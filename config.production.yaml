@@ -1,0 +1,104 @@
+# Production Configuration (GitHub Actions)
+timezone: "America/Edmonton"
+
+output:
+  site_dir: "site"
+  cache_dir: ".cache"
+  keep_history_days: 14
+
+data_source: "yfinance"
+
+report:
+  as_of_date: null
+  generate_daily: true
+  generate_weekly: true
+
+pairs:
+  - code: "EURUSD"
+    label: "EUR/USD"
+    yf: "EURUSD=X"
+  - code: "USDJPY"
+    label: "USD/JPY"
+    yf: "USDJPY=X"
+  - code: "GBPUSD"
+    label: "GBP/USD"
+    yf: "GBPUSD=X"
+  - code: "USDCAD"
+    label: "USD/CAD"
+    yf: "USDCAD=X"
+  - code: "AUDUSD"
+    label: "AUD/USD"
+    yf: "AUDUSD=X"
+  - code: "USDMXN"
+    label: "USD/MXN"
+    yf: "USDMXN=X"
+  - code: "USDCNH"
+    label: "USD/CNH*"
+    yf: "USDCNH=X"
+    fallback_yf: "USDCNY=X"
+
+cross_assets:
+  - code: "DXY"
+    label: "USD Index (DXY proxy)"
+    yf: "DX-Y.NYB"
+  - code: "SPY"
+    label: "S&P 500 ETF"
+    yf: "SPY"
+  - code: "NVDA"
+    label: "NVIDIA (Stock Proxy)"
+    yf: "NVDA"
+  - code: "VIX"
+    label: "VIX"
+    yf: "^VIX"
+  - code: "USO"
+    label: "Oil Fund (USO)"
+    yf: "USO"
+  - code: "GOLD"
+    label: "Gold"
+    yf: "GC=F"
+
+crypto:
+  - code: "BTC"
+    label: "Bitcoin (USD)"
+    yf: "BTC-USD"
+  - code: "ETH"
+    label: "Ethereum (USD)"
+    yf: "ETH-USD"
+  - code: "SOL"
+    label: "Solana (USD)"
+    yf: "SOL-USD"
+  - code: "USDC"
+    label: "USDC"
+    yf: "USDC-USD"
+
+fx_vol_indices:
+  - code: "VIX"
+    label: "S&P 500 Vol (VIX)"
+    yf: "^VIX"
+  - code: "GVZ"
+    label: "Gold Vol (GVZ)"
+    yf: "^GVZ"
+  - code: "OVX"
+    label: "Oil Vol (OVX)"
+    yf: "^OVX"
+
+sources:
+  treasury_yield_curve: true
+  econoday_calendar: true
+  investinglive_options: true
+  cftc_cot: true
+  forecasts:
+    scotiabank: true
+    td_economics: true
+    mufg: true
+    national_bank_canada_pdf: true
+  yahoo_news_via_yfinance: true
+  gdelt_headlines: true
+
+editorial:
+  macro_view: "USD remains the primary pivot for G10 flows. Expect heightened volatility ahead of central bank meetings."
+  daily_analyst_note: "The 2Y/10Y yield curve steepening is the dominant theme today. Watch levels closely."
+  weekly_prediction: "G10 carry trades likely to remain under pressure."
+  expert_references:
+    - name: "John Doe, Macro Strategist"
+      quote: "The divergence in inflation trajectories is creating rare opportunities."

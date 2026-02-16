@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Generate Institutional Reports
-        run: python -m fxmorning.cli generate
+        run: python -m fxmorning.cli generate --config config.production.yaml
         env:
           PYTHONPATH: .
 
